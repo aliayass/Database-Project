@@ -67,9 +67,3 @@ Projeye ait veritabanı modelinin ER diyagramını `docs/ERD.png` dosyasına ekl
 - **Sanat Eseri - Puanlama İlişkisi**: Bir sanat eseri birçok ziyaretçi tarafından puanlanabilir, her ziyaretçi de birden fazla eseri puanlayabilir (N:M).
 - **Sanat Eseri - Yorum İlişkisi**: Bir sanat eseri birçok ziyaretçi tarafından yorumlanabilir, her ziyaretçi de birden fazla eser hakkında yorum yapabilir (N:M).
 
-## Proje Kurulumu
-
-1. **Veritabanı Oluşturma**:
-   PostgreSQL ile veri tabanını oluşturmak için:
-   ```bash
-   createdb sanat_muzesi_db
