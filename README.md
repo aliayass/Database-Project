@@ -1,19 +1,27 @@
 # Sanat Eserleri ve Müzeler Veritabanı Projesi
 
-Bu proje, müzelerde sergilenen sanat eserlerini, müze bilgilerini, ziyaretçilerin etkileşimlerini, etkinlikleri, koleksiyonları ve müze içi yönetimi detaylı bir şekilde yönetmek için oluşturulmuş bir veritabanı sistemidir. Sistem, sanat eserleri ve koleksiyonlar ile müze içi görevler ve ziyaretçi etkileşimleri gibi birçok bileşeni kapsamaktadır.
+Bu proje, müzelerde sergilenen sanat eserlerini, müze bilgilerini, ziyaretçilerin etkileşimlerini, etkinlikleri, koleksiyonları ve müze içi yönetimi detaylı bir şekilde yönetmek amacıyla oluşturulmuş bir veritabanı sistemidir. Proje, sanat eserleri ve koleksiyonlar ile müze içi görevler ve ziyaretçi etkileşimleri gibi birçok bileşeni kapsamaktadır.
+
+## İçindekiler
+
+- [Proje Özeti](#proje-özeti)
+- [Veritabanı Yapısı](#veritabanı-yapısı)
+  - [Varlıklar ve Nitelikleri](#varlıklar-ve-nitelikleri)
+  - [İlişkiler](#ilişkiler)
 
 ## Proje Özeti
 
 Sanat Eserleri ve Müzeler Veritabanı, aşağıdaki kullanıcı türlerini ve işlevleri destekler:
+
 - **Ziyaretçiler (Sanatseverler)**: Sanat eserlerini görüntüleyebilir, yorum yapabilir, puan verebilir, müzeye ziyaretlerini kaydedebilir ve müze biletlerini satın alabilir.
 - **Müze Yöneticileri**: Sanat eserleri, sanatçılar, koleksiyonlar, etkinlikler, eğitim programları ve müze çalışanları hakkında bilgi ekleyebilir ve düzenleyebilir.
 - **Sanatçılar**: Eser bilgilerini sisteme ekleyebilir ve güncelleyebilir.
 
-Bu veri tabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, ziyaretler, koleksiyonlar, etkinlikler, eğitim programları ve sponsorluklar gibi birçok varlığı kapsar.
+Bu veritabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, ziyaretler, koleksiyonlar, etkinlikler, eğitim programları ve sponsorluklar gibi birçok varlığı kapsamaktadır.
 
 ## Veritabanı Yapısı
 
-### Varlıklar (Tablolar) ve Nitelikleri
+### Varlıklar ve Nitelikleri
 
 #### 1. Müze
 - **muze_id** (PK): Müzenin benzersiz kimlik numarası.
@@ -45,7 +53,7 @@ Bu veri tabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, z
 
 #### 5. Puanlama
 - **puanlama_id** (PK): Puanlama işleminin benzersiz kimlik numarası.
-- **puan**: Ziyaretçinin esere verdiği puan (1 ile 5 arasında olmalıdır).
+- **puan**: Ziyaretçinin esere verdiği puan (1 ile 5 arasında).
 - **ziyaretci_id** (FK): Puanı veren ziyaretçiyi işaret eden yabancı anahtar.
 - **eser_id** (FK): Puan verilen sanat eserini işaret eden yabancı anahtar.
 
@@ -70,7 +78,7 @@ Bu veri tabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, z
 - **bilet_id** (PK): Biletin benzersiz kimlik numarası.
 - **ziyaretci_id** (FK): Bileti alan ziyaretçiyi işaret eden yabancı anahtar.
 - **muze_id** (FK): Biletin geçerli olduğu müzeyi işaret eden yabancı anahtar.
-- **satın_alim_tarihi**: Biletin satın alındığı tarih.
+- **satin_alim_tarihi**: Biletin satın alındığı tarih.
 
 #### 10. Eğitim Programı
 - **program_id** (PK): Eğitim programının benzersiz kimlik numarası.
@@ -89,6 +97,30 @@ Bu veri tabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, z
 - **muze_id** (FK): Sponsorluk yapılan müzenin kimliği.
 - **destek_miktari**: Sponsor tarafından sağlanan destek miktarı.
 
+#### 13. Koleksiyon
+- **koleksiyon_id** (PK): Koleksiyonun benzersiz kimlik numarası.
+- **ad**: Koleksiyonun adı.
+- **muze_id** (FK): Koleksiyonun ait olduğu müze.
+- **aciklama**: Koleksiyon hakkında kısa bilgi.
+
+#### 14. Etkinlik
+- **etkinlik_id** (PK): Etkinliğin benzersiz kimlik numarası.
+- **ad**: Etkinliğin adı.
+- **tarih**: Etkinliğin tarihi.
+- **aciklama**: Etkinliğin açıklaması.
+- **muze_id** (FK): Etkinliğin düzenlendiği müze.
+
+#### 15. Ziyaret
+- **ziyaret_id** (PK): Ziyaretin benzersiz kimlik numarası.
+- **ziyaretci_id** (FK): Ziyaretin sahibi ziyaretçi.
+- **muze_id** (FK): Ziyaret edilen müze.
+- **ziyaret_tarihi**: Ziyaretin gerçekleştiği tarih.
+
+#### 16. Etkinlik Sanat Eseri (Bağlantı Tablosu)
+- **etkinlik_sanat_eser_id** (PK): İlişkinin benzersiz kimlik numarası.
+- **etkinlik_id** (FK): Etkinliği işaret eden yabancı anahtar.
+- **eser_id** (FK): Sanat eserini işaret eden yabancı anahtar.
+
 ### İlişkiler
 
 1. **Müze - Sanat Eseri**: Her müze birden fazla sanat eseri sergileyebilir (**1:N**).
@@ -96,13 +128,17 @@ Bu veri tabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, z
 3. **Sanat Eseri - Eser Türü**: Her sanat eseri bir türe aittir (**1:N**).
 4. **Müze - Koleksiyon**: Her müze birden fazla koleksiyon içerebilir (**1:N**).
 5. **Koleksiyon - Sanat Eseri**: Her koleksiyon birden fazla sanat eseri içerebilir (**1:N**).
-6. **Ziyaretçi - Ziyaret**: Her ziyaretçi birden fazla kez müzeyi ziyaret edebilir (**1:N**).
+6. **Ziyaretçi - Ziyaret**: Her ziyaretçi birden fazla müzeyi ziyaret edebilir (**1:N**).
 7. **Müze - Ziyaret**: Her müze birçok kez ziyaret edilebilir (**1:N**).
 8. **Müze - Etkinlik**: Her müze birden fazla etkinliğe ev sahipliği yapabilir (**1:N**).
 9. **Etkinlik - Sanat Eseri**: Her etkinlik birden fazla sanat eserini sergileyebilir (**N:M**).
-10. **Sanat Eseri - Puanlama**: Bir sanat eseri birçok ziyaretçi tarafından puanlanabilir (**N:M**).
-11. **Sanat Eseri - Yorum**: Bir sanat eseri birçok ziyaretçi tarafından yorumlanabilir (**N:M**).
-12. **Bilet - Müze**: Her bilet yalnızca bir müzede geçerli olur (**1:N**).
-13. **Müze Çalışanı - Müze**: Her çalışan yalnızca bir müzeye atanır (**1:N**).
-14. **Sponsor - Müze**: Her sponsor, birden fazla müzeye destek olabilir (**N:M**).
-15. **Müze - Eğitim Programı**: Her müze birden fazla eğitim programına sahip olabilir (**1:N**).
+10. **Sanat Eseri - Puanlama**: Her sanat eseri birden fazla puan alabilir (**1:N**).
+11. **Sanat Eseri - Yorum**: Her sanat eseri birden fazla yorum alabilir (**1:N**).
+12. **Müze - Bilet**: Her müze için birden fazla bilet satılabilir (**1:N**).
+13. **Müze - Eğitim Programı**: Her müze birden fazla eğitim programı düzenleyebilir (**1:N**).
+14. **Müze - Sponsorluk**: Her müze birden fazla sponsorluk alabilir (**1:N**).
+15. **Sponsor - Sponsorluk**: Her sponsor birden fazla müzeye sponsor olabilir (**1:N**).
+
+---
+
+Bu proje, sanat eserlerinin yönetiminden, müze etkinliklerine kadar kapsamlı bir veritabanı yapısını içerir. Her varlık ve ilişki, kullanıcıların ve müze çalışanlarının ihtiyaçlarını karşılayacak şekilde detaylandırılmıştır.
