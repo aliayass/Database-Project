@@ -6,10 +6,10 @@ Bu proje, müzelerde sergilenen sanat eserlerini, müze bilgilerini, ziyaretçil
 
 Sanat Eserleri ve Müzeler Veritabanı, aşağıdaki kullanıcı türlerini ve işlevleri destekler:
 - **Ziyaretçiler (Sanatseverler)**: Sanat eserlerini görüntüleyebilir, yorum yapabilir, puan verebilir, müzeye ziyaretlerini kaydedebilir ve müze biletlerini satın alabilir.
-- **Müze Yöneticileri**: Sanat eserleri, sanatçılar, koleksiyonlar, etkinlikler, eğitim programları ve müze çalışanları hakkında bilgi ekleyebilir, düzenleyebilir.
+- **Müze Yöneticileri**: Sanat eserleri, sanatçılar, koleksiyonlar, etkinlikler, eğitim programları ve müze çalışanları hakkında bilgi ekleyebilir ve düzenleyebilir.
 - **Sanatçılar**: Eser bilgilerini sisteme ekleyebilir ve güncelleyebilir.
 
-Bu veri tabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, ziyaretler, koleksiyonlar, etkinlikler, eğitim programları, sponsorluklar ve oda bilgileri gibi birçok varlığı kapsar.
+Bu veri tabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, ziyaretler, koleksiyonlar, etkinlikler, eğitim programları ve sponsorluklar gibi birçok varlığı kapsar.
 
 ## Veritabanı Yapısı
 
@@ -30,7 +30,6 @@ Bu veri tabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, z
 - **sanatci_id** (FK): Eserin sanatçısını işaret eden yabancı anahtar.
 - **muze_id** (FK): Eserin sergilendiği müzeyi işaret eden yabancı anahtar.
 - **koleksiyon_id** (FK, Opsiyonel): Eserin bir koleksiyona atanması durumunda koleksiyon kimliği.
-- **oda_id** (FK): Eserin sergilendiği odayı işaret eden yabancı anahtar.
 
 #### 3. Sanatçı
 - **sanatci_id** (PK): Sanatçının benzersiz kimlik numarası.
@@ -90,29 +89,20 @@ Bu veri tabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, z
 - **muze_id** (FK): Sponsorluk yapılan müzenin kimliği.
 - **destek_miktari**: Sponsor tarafından sağlanan destek miktarı.
 
-#### 13. Oda
-- **oda_id** (PK): Odanın benzersiz kimlik numarası.
-- **ad**: Odanın adı.
-- **kat**: Odanın bulunduğu kat.
-- **muze_id** (FK): Odanın bağlı olduğu müzeyi işaret eden yabancı anahtar.
-
 ### İlişkiler
 
 1. **Müze - Sanat Eseri**: Her müze birden fazla sanat eseri sergileyebilir (**1:N**).
 2. **Sanatçı - Sanat Eseri**: Her sanatçı birden fazla eser yaratabilir (**1:N**).
-3. **Sanat Eseri - Oda**: Her oda birden fazla eser içerebilir (**1:N**).
-4. **Sanat Eseri - Eser Türü**: Her sanat eseri bir türe aittir (**1:N**).
-5. **Müze - Koleksiyon**: Her müze birden fazla koleksiyon içerebilir (**1:N**).
-6. **Koleksiyon - Sanat Eseri**: Her koleksiyon birden fazla sanat eseri içerebilir (**1:N**).
-7. **Ziyaretçi - Ziyaret**: Her ziyaretçi birden fazla kez müzeyi ziyaret edebilir (**1:N**).
-8. **Müze - Ziyaret**: Her müze birçok kez ziyaret edilebilir (**1:N**).
-9. **Müze - Etkinlik**: Her müze birden fazla etkinliğe ev sahipliği yapabilir (**1:N**).
-10. **Etkinlik - Sanat Eseri**: Her etkinlik birden fazla sanat eserini sergileyebilir (**N:M**).
-11. **Sanat Eseri - Puanlama**: Bir sanat eseri birçok ziyaretçi tarafından puanlanabilir (**N:M**).
-12. **Sanat Eseri - Yorum**: Bir sanat eseri birçok ziyaretçi tarafından yorumlanabilir (**N:M**).
-13. **Bilet - Müze**: Her bilet yalnızca bir müzede geçerli olur (**1:N**).
-14. **Müze Çalışanı - Müze**: Her çalışan yalnızca bir müzeye atanır (**1:N**).
-15. **Sponsor - Müze**: Her sponsor, birden fazla müzeye destek olabilir (**N:M**).
-16. **Müze - Eğitim Programı**: Her müze birden fazla eğitim programına sahip olabilir (**1:N**).
-
-
+3. **Sanat Eseri - Eser Türü**: Her sanat eseri bir türe aittir (**1:N**).
+4. **Müze - Koleksiyon**: Her müze birden fazla koleksiyon içerebilir (**1:N**).
+5. **Koleksiyon - Sanat Eseri**: Her koleksiyon birden fazla sanat eseri içerebilir (**1:N**).
+6. **Ziyaretçi - Ziyaret**: Her ziyaretçi birden fazla kez müzeyi ziyaret edebilir (**1:N**).
+7. **Müze - Ziyaret**: Her müze birçok kez ziyaret edilebilir (**1:N**).
+8. **Müze - Etkinlik**: Her müze birden fazla etkinliğe ev sahipliği yapabilir (**1:N**).
+9. **Etkinlik - Sanat Eseri**: Her etkinlik birden fazla sanat eserini sergileyebilir (**N:M**).
+10. **Sanat Eseri - Puanlama**: Bir sanat eseri birçok ziyaretçi tarafından puanlanabilir (**N:M**).
+11. **Sanat Eseri - Yorum**: Bir sanat eseri birçok ziyaretçi tarafından yorumlanabilir (**N:M**).
+12. **Bilet - Müze**: Her bilet yalnızca bir müzede geçerli olur (**1:N**).
+13. **Müze Çalışanı - Müze**: Her çalışan yalnızca bir müzeye atanır (**1:N**).
+14. **Sponsor - Müze**: Her sponsor, birden fazla müzeye destek olabilir (**N:M**).
+15. **Müze - Eğitim Programı**: Her müze birden fazla eğitim programına sahip olabilir (**1:N**).
