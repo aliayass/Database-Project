@@ -120,4 +120,10 @@ Bu veritabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, zi
 10. **Sanat Eseri - Puanlama**: Her sanat eseri birden fazla puan alabilir (**1:N**).
 11. **Sanat Eseri - Yorum**: Her sanat eseri birden fazla yorum alabilir (**1:N**).
 12. **Müze - Bilet**: Her müze için birden fazla bilet satılabilir (**1:N**).
-13. **Müze - Sponsorluk**: Her müze birden fazla sponsorluk
+13. **Müze - Sponsorluk**: Her müze birden fazla sponsorluk anlaşmasına sahip olabilir (**1:N**).
+
+## Kurulum
+
+1. Veritabanınızı kurmak için bir veritabanı yönetim sistemi (MySQL, PostgreSQL, vb.) kullanın.
+2. Yukarıdaki şemayı kullanarak tabloları oluşturun.
+3. Veritabanı bağlantı bilgilerini doğru şekilde ayarlayın.
