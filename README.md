@@ -8,6 +8,7 @@ Bu proje, müzelerde sergilenen sanat eserlerini, müze bilgilerini, ziyaretçil
 - [Veritabanı Yapısı](#veritabanı-yapısı)
   - [Varlıklar ve Nitelikleri](#varlıklar-ve-nitelikleri)
   - [İlişkiler](#ilişkiler)
+  - [Yorumlama ve Puanlama İlişkisi](#yorumlama-ve-puanlama-ilişkisi)
 - [Kurulum](#kurulum)
 - [Kullanım](#kullanım)
 
@@ -53,19 +54,6 @@ Bu veritabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, zi
    - **email**: Ziyaretçinin e-posta adresi (tekil ve zorunludur).
    - **parola**: Ziyaretçinin parola bilgisi (şifrelenmiş olarak saklanmalıdır).
 
-5. **Puanlama**
-   - **puanlama_id** (PK): Puanlama işleminin benzersiz kimlik numarası.
-   - **puan**: Ziyaretçinin esere verdiği puan (1 ile 5 arasında).
-   - **ziyaretci_id** (FK): Puanı veren ziyaretçiyi işaret eden yabancı anahtar.
-   - **eser_id** (FK): Puan verilen sanat eserini işaret eden yabancı anahtar.
-
-6. **Yorum**
-   - **yorum_id** (PK): Yorumun benzersiz kimlik numarası.
-   - **icerik**: Yorumun içeriği.
-   - **yorum_tarihi**: Yorumun yapıldığı tarih ve saat.
-   - **ziyaretci_id** (FK): Yorumu yapan ziyaretçiyi işaret eden yabancı anahtar.
-   - **eser_id** (FK): Yorum yapılan sanat eserini işaret eden yabancı anahtar.
-
 7. **Eser Türü**
    - **tur_id** (PK): Eser türünün benzersiz kimlik numarası.
    - **ad**: Eser türünün adı (ör. Resim, Heykel, Fotoğraf, Dijital).
@@ -95,16 +83,11 @@ Bu veritabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, zi
     - **aciklama**: Etkinliğin açıklaması.
     - **muze_id** (FK): Etkinliğin düzenlendiği müze.
 
-12. **Ziyaret**
-    - **ziyaret_id** (PK): Ziyaretin benzersiz kimlik numarası.
-    - **ziyaretci_id** (FK): Ziyaretin sahibi ziyaretçi.
-    - **muze_id** (FK): Ziyaret edilen müze.
-    - **ziyaret_tarihi**: Ziyaretin gerçekleştiği tarih.
-
-13. **Etkinlik Sanat Eseri (Bağlantı Tablosu)**
-    - **etkinlik_sanat_eser_id** (PK): İlişkinin benzersiz kimlik numarası.
-    - **etkinlik_id** (FK): Etkinliği işaret eden yabancı anahtar.
-    - **eser_id** (FK): Sanat eserini işaret eden yabancı anahtar.
+12. **Puan ve Yorum**(İlişkisel Tablo)
+- **puanlama_id**: Puanlamanın benzersiz kimlik numarası (PK).         
+- **eser_id**: Puanlanan sanat eserinin kimlik numarası (FK).       
+- **ziyaretci_id**: Puan veren ziyaretçinin kimlik numarası (FK).       
+- **puan**: Verilen puan (örneğin, 1-5 arasında bir değer). 
 
 ### İlişkiler
 
@@ -113,17 +96,10 @@ Bu veritabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, zi
 3. **Sanat Eseri - Eser Türü**: Her sanat eseri bir türe aittir (**1:N**).
 4. **Müze - Koleksiyon**: Her müze birden fazla koleksiyon içerebilir (**1:N**).
 5. **Koleksiyon - Sanat Eseri**: Her koleksiyon birden fazla sanat eseri içerebilir (**1:N**).
-6. **Ziyaretçi - Ziyaret**: Her ziyaretçi birden fazla müzeyi ziyaret edebilir (**1:N**).
-7. **Müze - Ziyaret**: Her müze birçok kez ziyaret edilebilir (**1:N**).
-8. **Müze - Etkinlik**: Her müze birden fazla etkinliğe ev sahipliği yapabilir (**1:N**).
-9. **Etkinlik - Sanat Eseri**: Her etkinlik birden fazla sanat eserini sergileyebilir (**N:M**).
-10. **Sanat Eseri - Puanlama**: Her sanat eseri birden fazla puan alabilir (**1:N**).
-11. **Sanat Eseri - Yorum**: Her sanat eseri birden fazla yorum alabilir (**1:N**).
-12. **Müze - Bilet**: Her müze için birden fazla bilet satılabilir (**1:N**).
-13. **Müze - Sponsorluk**: Her müze birden fazla sponsorluk anlaşmasına sahip olabilir (**1:N**).
-
-## Kurulum
-
-1. Veritabanınızı kurmak için bir veritabanı yönetim sistemi (MySQL, PostgreSQL, vb.) kullanın.
-2. Yukarıdaki şemayı kullanarak tabloları oluşturun.
-3. Veritabanı bağlantı bilgilerini doğru şekilde ayarlayın.
+6. **Müze - Etkinlik**: Her müze birden fazla etkinliğe ev sahipliği yapabilir (**1:N**).
+7. **Etkinlik - Sanat Eseri**: Her etkinlik birden fazla sanat eserini sergileyebilir (**1:N**).
+8. **Sanat Eseri - Puanlama**: Her sanat eseri birden fazla puan alabilir (**1:N**).
+9. **Sanat Eseri - Yorum**: Her sanat eseri birden fazla yorum alabilir (**1:N**).
+10. **Müze - Bilet**: Her müze için birden fazla bilet satılabilir (**1:N**).
+11. **Müze - Sponsorluk**: Her müze birden fazla sponsorluk anlaşmasına sahip olabilir (**N:N**).
+12. **Ziyaretçi - Sanat Eseri**: Her ziyaretçi birden fazla sanat eserine puan verebilir ve yorum yapabilir(**N:M**).
