@@ -103,3 +103,7 @@ Bu veritabanı modeli; müzeler, sanat eserleri, sanatçılar, ziyaretçiler, zi
 10. **Müze - Bilet**: Her müze için birden fazla bilet satılabilir (**1:N**).
 11. **Müze - Sponsorluk**: Her müze birden fazla sponsorluk anlaşmasına sahip olabilir (**N:N**).
 12. **Ziyaretçi - Sanat Eseri**: Her ziyaretçi birden fazla sanat eserine puan verebilir ve yorum yapabilir(**N:M**).
+
+
+![image](https://github.com/user-attachments/assets/51dea352-7d98-487b-b512-a3690b141e5a)
+
