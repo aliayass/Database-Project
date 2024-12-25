@@ -1,0 +1,177 @@
+-- 1. Müze Tablosu
+CREATE TABLE Muze (
+    muze_id INT PRIMARY KEY,
+    ad NVARCHAR(100) NOT NULL,
+    adres NVARCHAR(200),
+    ziyaret_saatleri NVARCHAR(100),
+    giris_ucreti DECIMAL(10, 2)
+);
+
+-- Örnek Veriler: Müze Tablosu
+INSERT INTO Muze (muze_id, ad, adres, ziyaret_saatleri, giris_ucreti) VALUES
+(1, 'İstanbul Modern', 'Beyoğlu, İstanbul', '10:00-18:00', 50.00),
+(2, 'Pera Müzesi', 'Tepebaşı, İstanbul', '10:00-19:00', 40.00);
+
+-- 2. Sanat Eseri Tablosu
+CREATE TABLE SanatEseri (
+    eser_id INT PRIMARY KEY,
+    ad NVARCHAR(100) NOT NULL,
+    tur_id INT,
+    yaratilis_tarihi DATE,
+    sanatci_id INT,
+    muze_id INT,
+    koleksiyon_id INT,
+    FOREIGN KEY (tur_id) REFERENCES EserTuru(tur_id),
+    FOREIGN KEY (sanatci_id) REFERENCES Sanatci(sanatci_id),
+    FOREIGN KEY (muze_id) REFERENCES Muze(muze_id),
+    FOREIGN KEY (koleksiyon_id) REFERENCES Koleksiyon(koleksiyon_id)
+);
+
+-- Örnek Veriler: Sanat Eseri Tablosu
+INSERT INTO SanatEseri (eser_id, ad, tur_id, yaratilis_tarihi, sanatci_id, muze_id, koleksiyon_id) VALUES
+(1, 'Yıldızlı Gece', 1, '1889-06-01', 1, 1, NULL),
+(2, 'Mona Lisa', 1, '1503-01-01', 2, 2, NULL);
+
+-- 3. Sanatçı Tablosu
+CREATE TABLE Sanatci (
+    sanatci_id INT PRIMARY KEY,
+    ad NVARCHAR(100) NOT NULL,
+    dogum_tarihi DATE,
+    biyografi NVARCHAR(MAX)
+);
+
+-- Örnek Veriler: Sanatçı Tablosu
+INSERT INTO Sanatci (sanatci_id, ad, dogum_tarihi, biyografi) VALUES
+(1, 'Vincent van Gogh', '1853-03-30', 'Hollandalı post-empresyonist ressam.'),
+(2, 'Leonardo da Vinci', '1452-04-15', 'Rönesans döneminin en ünlü sanatçılarından biri.');
+
+-- 4. Ziyaretçi Tablosu
+CREATE TABLE Ziyaretci (
+    ziyaretci_id INT PRIMARY KEY,
+    isim NVARCHAR(100) NOT NULL,
+    email NVARCHAR(100) UNIQUE NOT NULL,
+    parola NVARCHAR(256) NOT NULL
+);
+
+-- Örnek Veriler: Ziyaretçi Tablosu
+INSERT INTO Ziyaretci (ziyaretci_id, isim, email, parola) VALUES
+(1, 'Ahmet Yılmaz', 'ahmet.yilmaz@example.com', 'hashed_password_1'),
+(2, 'Ayşe Kaya', 'ayse.kaya@example.com', 'hashed_password_2');
+
+-- 5. Eser Türü Tablosu
+CREATE TABLE EserTuru (
+    tur_id INT PRIMARY KEY,
+    ad NVARCHAR(50) NOT NULL
+);
+
+-- Örnek Veriler: Eser Türü Tablosu
+INSERT INTO EserTuru (tur_id, ad) VALUES
+(1, 'Resim'),
+(2, 'Heykel');
+
+-- 6. Müze Çalışanı Tablosu
+CREATE TABLE MuzeCalisani (
+    calisan_id INT PRIMARY KEY,
+    ad NVARCHAR(100) NOT NULL,
+    gorev NVARCHAR(100),
+    muze_id INT,
+    FOREIGN KEY (muze_id) REFERENCES Muze(muze_id)
+);
+
+-- Örnek Veriler: Müze Çalışanı Tablosu
+INSERT INTO MuzeCalisani (calisan_id, ad, gorev, muze_id) VALUES
+(1, 'Mehmet Demir', 'Rehber', 1),
+(2, 'Elif Arslan', 'Küratör', 2);
+
+-- 7. Bilet Tablosu
+CREATE TABLE Bilet (
+    bilet_id INT PRIMARY KEY,
+    ziyaretci_id INT,
+    muze_id INT,
+    satin_alim_tarihi DATE,
+    FOREIGN KEY (ziyaretci_id) REFERENCES Ziyaretci(ziyaretci_id),
+    FOREIGN KEY (muze_id) REFERENCES Muze(muze_id)
+);
+
+-- Örnek Veriler: Bilet Tablosu
+INSERT INTO Bilet (bilet_id, ziyaretci_id, muze_id, satin_alim_tarihi) VALUES
+(1, 1, 1, '2024-12-01'),
+(2, 2, 2, '2024-12-05');
+
+-- 8. Koleksiyon Tablosu
+CREATE TABLE Koleksiyon (
+    koleksiyon_id INT PRIMARY KEY,
+    ad NVARCHAR(100) NOT NULL,
+    muze_id INT,
+    aciklama NVARCHAR(MAX),
+    FOREIGN KEY (muze_id) REFERENCES Muze(muze_id)
+);
+
+-- Örnek Veriler: Koleksiyon Tablosu
+INSERT INTO Koleksiyon (koleksiyon_id, ad, muze_id, aciklama) VALUES
+(1, 'Rönesans Sanatı', 2, 'Rönesans dönemi eserleri koleksiyonu.');
+
+-- 9. Etkinlik Tablosu
+CREATE TABLE Etkinlik (
+    etkinlik_id INT PRIMARY KEY,
+    ad NVARCHAR(100) NOT NULL,
+    tarih DATE,
+    aciklama NVARCHAR(MAX),
+    muze_id INT,
+    FOREIGN KEY (muze_id) REFERENCES Muze(muze_id)
+);
+
+-- Örnek Veriler: Etkinlik Tablosu
+INSERT INTO Etkinlik (etkinlik_id, ad, tarih, aciklama, muze_id) VALUES
+(1, 'Van Gogh Sergisi', '2024-12-20', 'Vincent van Gogh eserlerinin sergilendiği özel etkinlik.', 1);
+
+-- 10. Puan ve Yorum Tablosu
+CREATE TABLE Puanlama (
+    puanlama_id INT PRIMARY KEY,
+    eser_id INT,
+    ziyaretci_id INT,
+    puan INT CHECK (puan BETWEEN 1 AND 5),
+    FOREIGN KEY (eser_id) REFERENCES SanatEseri(eser_id),
+    FOREIGN KEY (ziyaretci_id) REFERENCES Ziyaretci(ziyaretci_id)
+);
+
+-- Örnek Veriler: Puanlama Tablosu
+INSERT INTO Puanlama (puanlama_id, eser_id, ziyaretci_id, puan) VALUES
+(1, 1, 1, 5),
+(2, 2, 2, 4);
+
+-- Stored Procedure: Sanat Eserine Puan Ekleme veya Güncelleme
+CREATE PROCEDURE PuanEkleGuncelle
+    @eser_id INT,
+    @ziyaretci_id INT,
+    @puan INT
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM Puanlama WHERE eser_id = @eser_id AND ziyaretci_id = @ziyaretci_id)
+    BEGIN
+        -- Eğer kayıt varsa, güncelle
+        UPDATE Puanlama
+        SET puan = @puan
+        WHERE eser_id = @eser_id AND ziyaretci_id = @ziyaretci_id;
+    END
+    ELSE
+    BEGIN
+        -- Eğer kayıt yoksa, yeni kayıt ekle
+        INSERT INTO Puanlama (eser_id, ziyaretci_id, puan)
+        VALUES (@eser_id, @ziyaretci_id, @puan);
+    END
+END;
+
+-- Trigger: Sanat Eseri Puan Ortalamasını Güncelleme
+CREATE TRIGGER trg_GuncellePuanOrtalamasi
+ON Puanlama
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Sanat eserine ait puanların ortalamasını hesapla
+    UPDATE SanatEseri
+    SET yaratilis_tarihi = (SELECT AVG(puan) FROM Puanlama WHERE Puanlama.eser_id = SanatEseri.eser_id)
+    WHERE eser_id IN (SELECT DISTINCT eser_id FROM inserted);
+END;
